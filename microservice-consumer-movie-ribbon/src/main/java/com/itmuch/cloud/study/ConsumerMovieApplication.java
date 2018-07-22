@@ -10,6 +10,10 @@ import org.springframework.web.client.RestTemplate;
 @EnableDiscoveryClient
 @SpringBootApplication
 public class ConsumerMovieApplication {
+
+  /**
+   * 添加ribbon负载均衡
+   * **/
   @Bean
   @LoadBalanced
   public RestTemplate restTemplate() {

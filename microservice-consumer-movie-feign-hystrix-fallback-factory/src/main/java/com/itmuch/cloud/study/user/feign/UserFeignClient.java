@@ -36,7 +36,7 @@ class FeignClientFallbackFactory implements FallbackFactory<UserFeignClient> {
         // 日志最好放在各个fallback方法中，而不要直接放在create方法中。
         // 否则在引用启动时，就会打印该日志。
         // 详见https://github.com/spring-cloud/spring-cloud-netflix/issues/1471
-        FeignClientFallbackFactory.LOGGER.info("fallback; reason was:", cause);
+        FeignClientFallbackFactory.LOGGER.info("调用失败fallback; reason was:", cause);
         User user = new User();
         user.setId(-1L);
         user.setUsername("默认用户");

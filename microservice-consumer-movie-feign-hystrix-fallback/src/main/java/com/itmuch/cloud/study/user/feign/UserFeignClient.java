@@ -29,6 +29,7 @@ public interface UserFeignClient {
 class FeignClientFallback implements UserFeignClient {
   @Override
   public User findById(Long id) {
+	System.out.println("使用@FeignClient的fallback属性指定回退类");
     User user = new User();
     user.setId(-1L);
     user.setUsername("默认用户");

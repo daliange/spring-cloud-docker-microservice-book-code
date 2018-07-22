@@ -15,29 +15,36 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class MovieController {
-  private static final Logger LOGGER = LoggerFactory.getLogger(MovieController.class);
-  @Autowired
-  private RestTemplate restTemplate;
-  @Autowired
-  private LoadBalancerClient loadBalancerClient;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MovieController.class);
+	@Autowired
+	private RestTemplate restTemplate;
+	@Autowired
+	private LoadBalancerClient loadBalancerClient;
 
-  @HystrixCommand(fallbackMethod = "findByIdFallback")
-  @GetMapping("/user/{id}")
-  public User findById(@PathVariable Long id) {
-    return this.restTemplate.getForObject("http://microservice-provider-user/" + id, User.class);
-  }
+	//失败调用回退方法findByIdFallback
+	@HystrixCommand(fallbackMethod = "findByIdFallback")
+	@GetMapping("/user/{id}")
+	public User findById(@PathVariable Long id) {
+		return this.restTemplate.getForObject(
+				"http://microservice-provider-user/" + id, User.class);
+	}
 
-  public User findByIdFallback(Long id) {
-    User user = new User();
-    user.setId(-1L);
-    user.setName("默认用户");
-    return user;
-  }
+	public User findByIdFallback(Long id) {
+		
+		LOGGER.info("调用回退方法findByIdFallback");
+		User user = new User();
+		user.setId(-1L);
+		user.setName("默认用户");
+		return user;
+	}
 
-  @GetMapping("/log-user-instance")
-  public void logUserInstance() {
-    ServiceInstance serviceInstance = this.loadBalancerClient.choose("microservice-provider-user");
-    // 打印当前选择的是哪个节点
-    MovieController.LOGGER.info("{}:{}:{}", serviceInstance.getServiceId(), serviceInstance.getHost(), serviceInstance.getPort());
-  }
+	@GetMapping("/log-user-instance")
+	public void logUserInstance() {
+		ServiceInstance serviceInstance = this.loadBalancerClient
+				.choose("microservice-provider-user");
+		// 打印当前选择的是哪个节点
+		MovieController.LOGGER.info("{}:{}:{}", serviceInstance.getServiceId(),
+				serviceInstance.getHost(), serviceInstance.getPort());
+	}
 }
