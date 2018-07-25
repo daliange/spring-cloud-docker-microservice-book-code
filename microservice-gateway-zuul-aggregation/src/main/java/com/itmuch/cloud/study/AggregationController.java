@@ -29,8 +29,8 @@ public class AggregationController {
   public Observable<HashMap<String, User>> aggregateObservable(Long id) {
     // 合并两个或者多个Observables发射出的数据项，根据指定的函数变换它们
     return Observable.zip(
-            this.aggregationService.getUserById(id),
-            this.aggregationService.getMovieUserByUserId(id),
+            this.aggregationService.getUserById(new Long(1)),
+            this.aggregationService.getMovieUserByUserId(new Long(2)),
             (user, movieUser) -> {
               HashMap<String, User> map = Maps.newHashMap();
               map.put("user", user);

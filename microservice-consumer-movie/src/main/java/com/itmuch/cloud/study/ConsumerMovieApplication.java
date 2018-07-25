@@ -11,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
  * @EnableDiscoveryClient适配于各种服务组件
  * @EnableEurekaClient适配于EUREKA
  * **/
-//@EnableDiscoveryClient
+@EnableDiscoveryClient
 @SpringBootApplication
-@EnableEurekaClient
+//@EnableEurekaClient
 public class ConsumerMovieApplication {
   @Bean
   public RestTemplate restTemplate() {

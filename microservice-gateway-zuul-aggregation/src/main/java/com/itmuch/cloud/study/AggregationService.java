@@ -1,13 +1,20 @@
 package com.itmuch.cloud.study;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import rx.Observable;
 
 @Service
 public class AggregationService {
+	
+  public static final Logger logger = LoggerFactory.getLogger(AggregationService.class);
+  
   @Autowired
   private RestTemplate restTemplate;
 
@@ -33,6 +40,7 @@ public class AggregationService {
   }
 
   public User fallback(Long id) {
+	logger.info("调用@HystrixCommand-------fallback--------");
     User user = new User();
     user.setId(-1L);
     return user;
